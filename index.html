@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spend Mukesh Ambani's ₹8,60,000 Crores</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+    /* ----- Mobile Responsive Styles ----- */
+@media (max-width: 768px) {
+  h1, h2, h3 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .money-display {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .filter-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .filter-buttons button {
+    flex: 1 1 40%;
+    min-width: 120px;
+  }
+
+  .item-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .item-card {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  footer p {
+    font-size: 0.8rem;
+  }
+}
+   
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --tertiary: #8b5cf6;
+            --light: #f3f4f6;
+            --dark: #1f2937;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 
+                0 0 10px #fff, 
+                0 0 15px var(--primary), 
+                0 0 20px var(--primary), 
+                0 0 25px var(--primary), 
+                0 0 30px var(--primary);
+            animation: neon-pulse 1.5s infinite alternate;
+        }
+        
+        @keyframes neon-pulse {
+            from {
+                text-shadow: 0 0 5px #fff, 
+                    0 0 10px #fff, 
+                    0 0 15px var(--primary), 
+                    0 0 20px var(--primary), 
+                    0 0 25px var(--primary);
+            }
+            to {
+                text-shadow: 0 0 5px #fff, 
+                    0 0 10px var(--primary), 
+                    0 0 15px var(--primary), 
+                    0 0 20px var(--primary), 
+                    0 0 25px var(--primary), 
+                    0 0 30px var(--primary);
+            }
+        }
+        
+        .money-counter {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+        
+        .item-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2),
+                0 0 15px var(--secondary),
+                0 0 25px var(--tertiary);
+        }
+        
+        .buy-btn {
+            background: linear-gradient(45deg, var(--primary), var(--tertiary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--primary), 0 0 20px var(--tertiary);
+        }
+        
+        .buy-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .category-btn {
+            position: relative;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--tertiary));
+            transition: all 0.3s ease;
+            z-index: -1;
+            border-radius: 50px;
+        }
+        
+        .category-btn:hover::before,
+        .category-btn.active::before {
+            width: 100%;
+        }
+        
+        .category-btn.active {
+            box-shadow: 0 0 10px var(--primary), 0 0 15px var(--tertiary);
+        }
+        
+        .share-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .share-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .twitter-btn {
+            background: #1DA1F2;
+            color: white;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+        }
+        
+        .facebook-btn {
+            background: #4267B2;
+            color: white;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(45deg, #ef4444, #f59e0b);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #ef4444, 0 0 15px #f59e0b;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background: #1f2937;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transform: scale(0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .bounce {
+            animation: bounce 1s infinite;
+        }
+        
+        .mega-expensive {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mega-expensive::before {
+            content: "MEGA EXPENSE";
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background: linear-gradient(45deg, #ef4444, #f59e0b);
+            color: white;
+            padding: 5px 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .money-counter {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 neon-text">Spend Mukesh Ambani's Fortune</h1>
+            <p class="text-xl md:text-2xl mb-8">How would you spend ₹8,60,000 Crores?</p>
+            
+            <div class="money-counter mb-8 sticky top-0 z-50">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-xl">Money Remaining:</p>
+                        <p class="text-3xl md:text-4xl font-bold text-green-400" id="money-remaining">₹8,60,000 Crores</p>
+                    </div>
+                    <div>
+                        <p class="text-xl">Money Spent:</p>
+                        <p class="text-3xl md:text-4xl font-bold text-pink-400" id="money-spent">₹0</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="categories-container mb-8 overflow-x-auto whitespace-nowrap">
+            <div class="flex space-x-4 pb-2">
+                <button class="category-btn active" data-category="all">All Items</button>
+                <button class="category-btn" data-category="affordable">Affordable</button>
+                <button class="category-btn" data-category="mid-range">Mid-Range</button>
+                <button class="category-btn" data-category="expensive">Expensive</button>
+                <button class="category-btn" data-category="ultra-expensive">Ultra Expensive</button>
+                <button class="category-btn" data-category="insanely-expensive">Insanely Expensive</button>
+            </div>
+        </div>
+        
+        <main>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="items-container">
+                <!-- Items will be dynamically added here -->
+            </div>
+        </main>
+        
+        <section class="mt-16 mb-8 text-center" id="ambani-reaction">
+            <h2 class="text-2xl font-bold mb-6">Mukesh Ambani Reacts 😎</h2>
+            <div class="flex justify-center mb-4">
+                <img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Smilies/Smiling%20Face%20with%20Sunglasses.png" alt="Mukesh Ambani" class="w-24 h-24">
+            </div>
+            <p class="text-xl" id="ambani-quote">"Go ahead, start spending my fortune! I'm curious to see what you'll buy first."</p>
+        </section>
+        
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-8 mb-16">
+            <button id="reset-btn" class="reset-btn">Reset All Purchases</button>
+            
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <button class="share-btn twitter-btn" id="twitter-share">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                        <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                    </svg>
+                    Tweet
+                </button>
+                <button class="share-btn whatsapp-btn" id="whatsapp-share">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                    </svg>
+                    WhatsApp
+                </button>
+                <button class="share-btn facebook-btn" id="facebook-share">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+                    </svg>
+                    Share
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reset Confirmation Modal -->
+    <div class="modal" id="reset-modal">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold mb-4">Reset Confirmation</h3>
+            <p class="mb-6">Are you sure you want to reset all your purchases?</p>
+            <div class="flex justify-end gap-4">
+                <button class="px-4 py-2 bg-gray-600 rounded-md" id="cancel-reset">Cancel</button>
+                <button class="px-4 py-2 bg-red-600 rounded-md" id="confirm-reset">Reset</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Elements -->
+    <audio id="cash-sound" preload="auto">
+        <source src="https://cdn.jsdelivr.net/gh/soundjay/SoundEffects/sounds/sound-effects/cash-register-05.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="celebration-sound" preload="auto">
+        <source src="https://cdn.jsdelivr.net/gh/soundjay/SoundEffects/sounds/sound-effects/applause-01.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Format numbers with commas and crores
+            function formatIndianCurrency(amount) {
+                const crore = 10000000;
+                if (amount >= crore) {
+                    return '₹' + (amount / crore).toFixed(2).replace(/\.00$/, '') + ' Crores';
+                } else {
+                    return '₹' + amount.toLocaleString('en-IN');
+                }
+            }
+            
+            // Convert crores to raw number
+            function croreToNumber(crore) {
+                return crore * 10000000;
+            }
+            
+            // Initialize variables
+            const totalMoney = croreToNumber(860000); // 8.6 lakh crores in raw number
+            let moneyRemaining = totalMoney;
+            let moneySpent = 0;
+            const purchasedItems = {};
+            
+            // DOM Elements
+            const moneyRemainingElement = document.getElementById('money-remaining');
+            const moneySpentElement = document.getElementById('money-spent');
+            const itemsContainer = document.getElementById('items-container');
+            const ambaniQuote = document.getElementById('ambani-quote');
+            const cashSound = document.getElementById('cash-sound');
+            const celebrationSound = document.getElementById('celebration-sound');
+            const resetBtn = document.getElementById('reset-btn');
+            const resetModal = document.getElementById('reset-modal');
+            const cancelResetBtn = document.getElementById('cancel-reset');
+            const confirmResetBtn = document.getElementById('confirm-reset');
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const twitterShareBtn = document.getElementById('twitter-share');
+            const whatsappShareBtn = document.getElementById('whatsapp-share');
+            const facebookShareBtn = document.getElementById('facebook-share');
+            
+            // Update money displays
+            function updateMoneyDisplays() {
+                moneyRemainingElement.textContent = formatIndianCurrency(moneyRemaining);
+                moneySpentElement.textContent = formatIndianCurrency(moneySpent);
+                
+                // Update Ambani's reaction
+                if (moneySpent === 0) {
+                    ambaniQuote.textContent = "Go ahead, start spending my fortune! I'm curious to see what you'll buy first.";
+                } else if (moneySpent < totalMoney * 0.01) {
+                    ambaniQuote.textContent = "That's just pocket change for me. Keep going!";
+                } else if (moneySpent < totalMoney * 0.1) {
+                    ambaniQuote.textContent = "Now you're starting to spend some real money. But I still have plenty left!";
+                } else if (moneySpent < totalMoney * 0.25) {
+                    ambaniQuote.textContent = "You've spent a quarter of my fortune. Pretty impressive!";
+                } else if (moneySpent < totalMoney * 0.5) {
+                    ambaniQuote.textContent = "Half my wealth is gone! You're quite the big spender.";
+                } else if (moneySpent < totalMoney * 0.75) {
+                    ambaniQuote.textContent = "I'm starting to worry about my financial future... just kidding!";
+                } else if (moneySpent < totalMoney) {
+                    ambaniQuote.textContent = "Almost there! Can you spend it all?";
+                } else {
+                    ambaniQuote.textContent = "Wow! You've spent all my money. Time to call my accountant!";
+                    celebrationSound.play();
+                    triggerConfetti();
+                }
+            }
+            
+            // Trigger confetti animation
+            function triggerConfetti() {
+                const duration = 5 * 1000;
+                const animationEnd = Date.now() + duration;
+                
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+                
+                (function frame() {
+                    const timeLeft = animationEnd - Date.now();
+                    
+                    if (timeLeft <= 0) return;
+                    
+                    confetti({
+                        particleCount: 3,
+                        angle: randomInRange(55, 125),
+                        spread: randomInRange(50, 70),
+                        origin: { y: 0.6 },
+                        colors: ['#FFD700', '#FFC0CB', '#00FFFF', '#FF00FF', '#00FF00'],
+                        zIndex: 2000
+                    });
+                    
+                    requestAnimationFrame(frame);
+                }());
+            }
+            
+            // Buy item function
+            function buyItem(item, quantity = 1) {
+                const totalCost = item.price * quantity;
+                
+                if (moneyRemaining >= totalCost) {
+                    moneyRemaining -= totalCost;
+                    moneySpent += totalCost;
+                    
+                    if (!purchasedItems[item.id]) {
+                        purchasedItems[item.id] = 0;
+                    }
+                    purchasedItems[item.id] += quantity;
+                    
+                    cashSound.currentTime = 0;
+                    cashSound.play();
+                    
+                    updateMoneyDisplays();
+                    updateItemQuantities();
+                }
+            }
+            
+            // Update item quantities
+            function updateItemQuantities() {
+                const allItems = document.querySelectorAll('.item-card');
+                
+                allItems.forEach(itemCard => {
+                    const itemId = itemCard.dataset.id;
+                    const quantityElement = itemCard.querySelector('.quantity');
+                    const quantity = purchasedItems[itemId] || 0;
+                    
+                    quantityElement.textContent = quantity;
+                    
+                    // Enable/disable buttons based on remaining money
+                    const buyBtn = itemCard.querySelector('.buy-btn');
+                    const item = items.find(i => i.id === itemId);
+                    
+                    if (item.price > moneyRemaining) {
+                        buyBtn.disabled = true;
+                        buyBtn.classList.add('opacity-50');
+                    } else {
+                        buyBtn.disabled = false;
+                        buyBtn.classList.remove('opacity-50');
+                    }
+                });
+            }
+            
+            // Reset all purchases
+            function resetPurchases() {
+                moneyRemaining = totalMoney;
+                moneySpent = 0;
+                
+                // Clear purchased items
+                for (const key in purchasedItems) {
+                    purchasedItems[key] = 0;
+                }
+                
+                updateMoneyDisplays();
+                updateItemQuantities();
+                resetModal.classList.remove('show');
+            }
+            
+            // Item data
+            const items = [
+                // Insanely Expensive (Highlighted on Main Page)
+                {
+                    id: 'ipl-team',
+                    name: 'IPL Cricket Team',
+                    price: croreToNumber(4000),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Activities/Cricket%20Game.png',
+                    category: 'insanely-expensive',
+                    isMegaExpensive: true
+                },
+                {
+                    id: 'antilia',
+                    name: 'Antilia-like Mansion',
+                    price: croreToNumber(12000),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Places/Building%20Construction.png',
+                    category: 'insanely-expensive',
+                    isMegaExpensive: true
+                },
+                {
+                    id: 'free-jio',
+                    name: 'Free Jio for All Indians',
+                    price: croreToNumber(15000),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Mobile%20Phone.png',
+                    category: 'insanely-expensive',
+                    isMegaExpensive: true
+                },
+                {
+                    id: 'private-island',
+                    name: 'Private Island',
+                    price: croreToNumber(700),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Places/Desert%20Island.png',
+                    category: 'ultra-expensive',
+                    isMegaExpensive: true
+                },
+                {
+                    id: 'space-tourism',
+                    name: 'Space Tourism Program',
+                    price: croreToNumber(5000),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Rocket.png',
+                    category: 'insanely-expensive',
+                    isMegaExpensive: true
+                },
+                
+                // Ultra Expensive
+                {
+                    id: 'private-jet',
+                    name: 'Airbus A380 Private Jet',
+                    price: croreToNumber(3500),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Airplane.png',
+                    category: 'ultra-expensive'
+                },
+                {
+                    id: 'bollywood-studio',
+                    name: 'Bollywood Production House',
+                    price: croreToNumber(2000),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Movie%20Camera.png',
+                    category: 'ultra-expensive'
+                },
+                {
+                    id: 'taj-mahal-replica',
+                    name: 'Taj Mahal Private Replica',
+                    price: croreToNumber(1000),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Taj%20Mahal.png',
+                    category: 'ultra-expensive'
+                },
+                
+                // Expensive
+                {
+                    id: 'luxury-yacht',
+                    name: 'Luxury Mega Yacht',
+                    price: croreToNumber(75),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Sailboat.png',
+                    category: 'expensive'
+                },
+                {
+                    id: 'ferrari-collection',
+                    name: 'Ferrari Car Collection',
+                    price: croreToNumber(30),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Racing%20Car.png',
+                    category: 'expensive'
+                },
+                {
+                    id: 'mumbai-villa',
+                    name: 'Luxury Villa in Mumbai',
+                    price: croreToNumber(25),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Places/Houses.png',
+                    category: 'expensive'
+                },
+                {
+                    id: 'luxury-hotel',
+                    name: '5-Star Hotel for a Year',
+                    price: croreToNumber(10),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Places/Hotel.png',
+                    category: 'expensive'
+                },
+                
+                // Mid-Range
+                {
+                    id: 'rolex-collection',
+                    name: 'Rolex Watch Collection',
+                    price: croreToNumber(0.95),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Watch.png',
+                    category: 'mid-range'
+                },
+                {
+                    id: 'luxury-apartment',
+                    name: 'Luxury Apartment in Tier-2 City',
+                    price: croreToNumber(0.8),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Places/Office%20Building.png',
+                    category: 'mid-range'
+                },
+                {
+                    id: 'mercedes',
+                    name: 'Mercedes-Benz S-Class',
+                    price: croreToNumber(0.75),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Automobile.png',
+                    category: 'mid-range'
+                },
+                {
+                    id: 'diamond-necklace',
+                    name: 'Diamond Necklace',
+                    price: croreToNumber(0.5),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Gem%20Stone.png',
+                    category: 'mid-range'
+                },
+                {
+                    id: 'world-tour',
+                    name: 'Business Class World Tour',
+                    price: croreToNumber(0.25),
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Globe%20Showing%20Europe-Africa.png',
+                    category: 'mid-range'
+                },
+                
+                // Affordable
+                {
+                    id: 'luxury-watch',
+                    name: 'Luxury Watch',
+                    price: 400000,
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Alarm%20Clock.png',
+                    category: 'affordable'
+                },
+                {
+                    id: 'gaming-pc',
+                    name: 'Ultimate Gaming PC Setup',
+                    price: 250000,
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Desktop%20Computer.png',
+                    category: 'affordable'
+                },
+                {
+                    id: 'iphone',
+                    name: 'iPhone 15 Pro Max',
+                    price: 159900,
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Mobile%20Phone.png',
+                    category: 'affordable'
+                },
+                {
+                    id: 'royal-enfield',
+                    name: 'Royal Enfield Bullet 350',
+                    price: 150000,
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Travel%20and%20places/Motorcycle.png',
+                    category: 'affordable'
+                },
+                {
+                    id: 'designer-saree',
+                    name: 'Designer Saree',
+                    price: 95000,
+                    image: 'https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Kimono.png',
+                    category: 'affordable'
+                }
+            ];
+            
+            // Render items
+            function renderItems(category = 'all') {
+                itemsContainer.innerHTML = '';
+                
+                let itemsToShow = items;
+                
+                // Filter by category if not 'all'
+                if (category !== 'all') {
+                    itemsToShow = items.filter(item => item.category === category);
+                }
+                
+                // Always show mega expensive items first if viewing 'all'
+                if (category === 'all') {
+                    const megaExpensiveItems = itemsToShow.filter(item => item.isMegaExpensive);
+                    const otherItems = itemsToShow.filter(item => !item.isMegaExpensive);
+                    
+                    itemsToShow = [...megaExpensiveItems, ...otherItems];
+                }
+                
+                itemsToShow.forEach(item => {
+                    const quantity = purchasedItems[item.id] || 0;
+                    const canBuy = moneyRemaining >= item.price;
+                    
+                    const itemCard = document.createElement('div');
+                    itemCard.className = `item-card p-4 ${item.isMegaExpensive ? 'mega-expensive' : ''}`;
+                    itemCard.dataset.id = item.id;
+                    
+                    itemCard.innerHTML = `
+                        <div class="flex flex-col h-full">
+                            <div class="flex justify-center mb-4">
+                                <img src="${item.image}" alt="${item.name}" class="w-20 h-20">
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">${item.name}</h3>
+                            <p class="text-lg font-medium text-pink-400 mb-4">${formatIndianCurrency(item.price)}</p>
+                            <div class="flex justify-between items-center mt-auto">
+                                <div class="quantity-control">
+                                    <button class="quantity-btn minus-btn" data-id="${item.id}">-</button>
+                                    <span class="mx-3 quantity">${quantity}</span>
+                                    <button class="quantity-btn plus-btn" data-id="${item.id}">+</button>
+                                </div>
+                                <button class="buy-btn ${!canBuy ? 'opacity-50' : ''}" data-id="${item.id}" ${!canBuy ? 'disabled' : ''}>Buy</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    itemsContainer.appendChild(itemCard);
+                });
+                
+                // Add event listeners to the newly created buttons
+                document.querySelectorAll('.buy-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = this.dataset.id;
+                        const item = items.find(i => i.id === itemId);
+                        buyItem(item);
+                    });
+                });
+                
+                document.querySelectorAll('.plus-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = this.dataset.id;
+                        const item = items.find(i => i.id === itemId);
+                        buyItem(item);
+                    });
+                });
+                
+                document.querySelectorAll('.minus-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = this.dataset.id;
+                        const item = items.find(i => i.id === itemId);
+                        const quantity = purchasedItems[itemId] || 0;
+                        
+                        if (quantity > 0) {
+                            moneyRemaining += item.price;
+                            moneySpent -= item.price;
+                            purchasedItems[itemId] -= 1;
+                            
+                            updateMoneyDisplays();
+                            updateItemQuantities();
+                        }
+                    });
+                });
+            }
+            
+            // Category navigation
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    // Remove 'active' class from all buttons
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Add 'active' class to clicked button
+                    this.classList.add('active');
+                    
+                    // Render items for selected category
+                    renderItems(category);
+                });
+            });
+            
+            // Reset button functionality
+            resetBtn.addEventListener('click', function() {
+                if (moneySpent > 0) {
+                    resetModal.classList.add('show');
+                }
+            });
+            
+            cancelResetBtn.addEventListener('click', function() {
+                resetModal.classList.remove('show');
+            });
+            
+            confirmResetBtn.addEventListener('click', resetPurchases);
+            
+            // Share functionality
+            twitterShareBtn.addEventListener('click', function() {
+                const text = `I just spent ${formatIndianCurrency(moneySpent)} of Mukesh Ambani's fortune! Try it yourself:`;
+                const url = window.location.href;
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+            });
+            
+            whatsappShareBtn.addEventListener('click', function() {
+                const text = `I just spent ${formatIndianCurrency(moneySpent)} of Mukesh Ambani's fortune! Try it yourself:`;
+                const url = window.location.href;
+                window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+            });
+            
+            facebookShareBtn.addEventListener('click', function() {
+                const url = window.location.href;
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+            });
+            
+            // Initialize the app
+            renderItems('all');
+            updateMoneyDisplays();
+        });
+    </script>
+    
+    <footer class="text-center py-4 text-sm text-gray-400">
+        <p>This is a simulation game. All figures are approximations based on public data.</p>
+        <p class="mt-2">Created for entertainment purposes only.</p>
+        <p class="mt-4">© 2025 - Spend Mukesh Ambani's Fortune</p>
+    </footer>
+</body>
+</html>
+<head>
+ 
